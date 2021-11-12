@@ -98,7 +98,7 @@ async function run() {
             res.send(myorders);
         })
 
-        delete order
+        // delete order
         app.delete('/myorders/:id', async(req,res) => {
             const id = req.params.id;
             const query = {_id : ObjectId(id)};
@@ -106,13 +106,14 @@ async function run() {
             res.json(result);
         })
 
-         // Add review to collection
+         
          app.post('/orders', async(req,res) => {
             const order = req.body;
             const result = await ordersCollection.insertOne(order);
             res.json(result);
         }) 
 
+        // Add review to collection
         app.post('/addreview', async (req, res) => {
             const review = req.body;
             try {
@@ -126,7 +127,26 @@ async function run() {
             }
         });
 
-        
+        // get all reviews
+        app.get('/reviews', async(req,res) => {
+            const cursor = reviewsCollection.find({});
+            try {
+                const reviews = await cursor.toArray();
+                res.send(reviews);
+            }
+            catch(error) {
+
+            }
+        })
+
+        // add user 
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            console.log(result);
+            res.json(result);
+        });
+
         app.put('/users', async (req, res) => {
             const user = req.body;
             const filter = { email: user.email };
