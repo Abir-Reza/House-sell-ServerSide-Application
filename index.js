@@ -28,6 +28,7 @@ async function run() {
         const housesCollection = database.collection('houses');
         const usersCollection = database.collection('users');
         const ordersCollection = database.collection('orders');
+        const reviewsCollection = database.collection('reviews');
 
         app.get('/houseshomepage', async(req,res) => {
             const cursor = housesCollection.find({}).limit(6);
@@ -105,15 +106,20 @@ async function run() {
             res.json(result);
         })
 
-         
-
-        app.post('/users', async (req, res) => {
-            const user = req.body;
-            try {
-                const result = await usersCollection.insertOne(user);
-            console.log(result);
+         // Add review to collection
+         app.post('/orders', async(req,res) => {
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
             res.json(result);
-            console.log(' post user working');
+        }) 
+
+        app.post('/addreview', async (req, res) => {
+            const review = req.body;
+            try {
+                const result = await reviewsCollection.insertOne(review);
+                console.log(result);
+                res.json(result);
+                console.log(' post review working');
             }
             catch(error) {
                 res.send(error);
