@@ -30,6 +30,7 @@ async function run() {
         const ordersCollection = database.collection('orders');
         const reviewsCollection = database.collection('reviews');
 
+        // get first six product for homepage
         app.get('/houseshomepage', async(req,res) => {
             const cursor = housesCollection.find({}).limit(6);
             try{
@@ -41,11 +42,12 @@ async function run() {
             }
         })
 
+        // get all products from database
         app.get('/allhouses', async(req,res) => {
             const cursor = housesCollection.find({});
             try {
                 const houses = await cursor.toArray();
-            res.send(houses);
+                res.send(houses);
             }
             catch(error) {
 
@@ -57,6 +59,15 @@ async function run() {
             const house = req.body;
             const result = await housesCollection.insertOne(house);
             res.send("post hitted");
+        })
+
+        // Delete house by id
+        app.delete('/houses/:id', async(req,res) => {
+            const id = req.params.id;
+            const query = {_id : ObjectId(id)};
+            const result = await housesCollection.deleteOne(query);
+            res.json(result);
+            
         })
 
         // app.get('/purchase/:id', async(req,res) =>{
@@ -75,16 +86,19 @@ async function run() {
             res.json(house);
         })
 
-        // // Get ordered houses
-        // app.get('/orderedhouses/:id' , async(res,res) => {
-
-        // })
 
         // orders collection
         app.post('/orders', async(req,res) => {
             const order = req.body;
             const result = await ordersCollection.insertOne(order);
             res.json(result);
+        })
+
+          // get orders 
+          app.get('/orders', async(req,res) => {
+            const cursor = ordersCollection.find({});
+            const orders = await cursor.toArray();
+            res.send(orders);
         })
 
         // users orders
@@ -106,12 +120,10 @@ async function run() {
             res.json(result);
         })
 
-         
-         app.post('/orders', async(req,res) => {
-            const order = req.body;
-            const result = await ordersCollection.insertOne(order);
-            res.json(result);
-        }) 
+
+      
+
+
 
         // Add review to collection
         app.post('/addreview', async (req, res) => {
