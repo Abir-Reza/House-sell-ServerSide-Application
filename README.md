@@ -1,8 +1,6 @@
 # Project Title: Dream House
 #### Short Description: An web Application for purchasing house or appertments
 
-## Live link : 
-https://dream-house-fullstack.web.app/
 
 ## Client-Side link : 
 https://github.com/Abir-Reza/House-Sell-ClientSide-React-Application
